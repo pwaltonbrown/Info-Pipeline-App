@@ -20,8 +20,8 @@ CITY = "Raleigh,NC,US"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
 
-# FIXED: Added BASE_URL
-BASE_URL = "http://openweathermap.org"
+# OpenWeather current weather endpoint
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 def run_pipeline():
     # 2. Package parameters cleanly as a safe dictionary
