@@ -11,12 +11,12 @@ import pandas as pd
 from datetime import datetime
 
 # Pipeline configuration
-CITY = "Raleigh,NC,US"
-API_KEY = os.environ.get("WEATHER_API_KEY")
+API_KEY = os.getenv('WEATHER_API_KEY')  
+location = "raleigh,nc,us"
 CSV_FILE = "weather_history.csv"
 
 # Build the URL
-URL = f"http://openweathermap.org{CITY}&appid={API_KEY}&units=imperial"
+url = f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={API_KEY}&units=imperial"
 
 # Run the pipeline
 def run_pipeline():
