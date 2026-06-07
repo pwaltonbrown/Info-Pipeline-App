@@ -10,6 +10,12 @@ import requests
 import pandas as pd
 from datetime import datetime
 
+# Get the API key and test it
+API_KEY = os.getenv('WEATHER_API_KEY')
+if not API_KEY:
+    print("ERROR: WEATHER_API_KEY environment variable not set!")
+    exit(1)
+
 # Pipeline configuration
 API_KEY = os.getenv('WEATHER_API_KEY')  
 CITY = "raleigh,nc,us"
