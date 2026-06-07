@@ -14,8 +14,11 @@ from datetime import datetime
 CITY = "Raleigh,NC,US"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
+
+# Build the URL
 URL = f"http://openweathermap.org{CITY}&appid={API_KEY}&units=imperial"
 
+# Run the pipeline
 def run_pipeline():
 
     # 1. Extract Data    
