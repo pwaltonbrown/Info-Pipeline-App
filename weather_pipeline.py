@@ -9,7 +9,6 @@ import os
 import requests
 import pandas as pd
 from datetime import datetime
-
 import os
 import requests
 import pandas as pd
@@ -31,14 +30,16 @@ def run_pipeline():
         "units": "imperial"
     }
 
-    # 3. Extract Data (Requests will handle building the URL safely)
+    # 3. Extract Data from API
     response = requests.get(BASE_URL, params=query_params)
     
-    # FIXED: Added error handling
+    # Check if the request was successful
     if response.status_code != 200:
         print(f"Error fetching data: {response.status_code}")
         print(f"Server response details: {response.text}") # Helps us see exact API errors
         return
+    
+    # Parse the JSON response
     raw_data = response.json()
 
     # 4. Transform Data
@@ -49,17 +50,29 @@ def run_pipeline():
         "humidity": [raw_data["main"]["humidity"]],
         "weather_condition": [raw_data["weather"][0]["description"]] # FIXED: Added index [0] to avoid future pandas issues
     }
+    
+    # Create a DataFrame
     df_new = pd.DataFrame(cleaned_data)
 
     # 5. Load Data
     if os.path.exists(CSV_FILE):
+        
+        # Append to existing CSV
         df_existing = pd.read_csv(CSV_FILE)
+        
+        # Concatenate
         df_final = pd.concat([df_existing, df_new], ignore_index=True)
     else:
+        
+        # Create new CSV
         df_final = df_new
 
+    # 6. Save Data
     df_final.to_csv(CSV_FILE, index=False)
+    
+    # 7. Log
     print(f"Successfully saved weather data for {CITY}!")
 
+# Run the pipeline
 if __name__ == "__main__":
     run_pipeline()

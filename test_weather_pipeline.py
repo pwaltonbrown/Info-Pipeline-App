@@ -1,24 +1,38 @@
+# Name: test_weather_pipeline.py
+# Description: This is a program to test weather_pipeline.py
+# Author: Patrick Brown
+# Date: 6/7/2026
+
+
+# Import libraries
 import unittest
 from unittest.mock import patch, Mock
-
 import weather_pipeline
 
-
+# Test the run_pipeline function
 class WeatherPipelineTests(unittest.TestCase):
     @patch("weather_pipeline.os.path.exists", return_value=False)
     @patch("pandas.DataFrame.to_csv")
     @patch("weather_pipeline.requests.get")
     def test_run_pipeline_builds_request_with_base_url_and_params(self, mock_get, _mock_to_csv, _mock_exists):
+        
+        # Mock the API response
         mock_response = Mock(status_code=200)
+        
+        # Mock the JSON response
         mock_response.json.return_value = {
             "name": "Raleigh",
             "main": {"temp": 75, "humidity": 40},
             "weather": [{"description": "clear sky"}],
         }
+        
+        # Mock the requests.get function
         mock_get.return_value = mock_response
 
+        # Call the run_pipeline function
         weather_pipeline.run_pipeline()
 
+        # Assert that the requests.get function was called with the correct arguments
         mock_get.assert_called_once_with(
             weather_pipeline.BASE_URL,
             params={
@@ -28,6 +42,7 @@ class WeatherPipelineTests(unittest.TestCase):
             },
         )
 
+    # Test the run_pipeline function
     @patch("weather_pipeline.os.path.exists", return_value=False)
     @patch("pandas.DataFrame.to_csv")
     @patch("weather_pipeline.requests.get")
@@ -38,6 +53,6 @@ class WeatherPipelineTests(unittest.TestCase):
 
         mock_to_csv.assert_not_called()
 
-
+# Run the tests
 if __name__ == "__main__":
     unittest.main()
