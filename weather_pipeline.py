@@ -16,7 +16,7 @@ location = "raleigh,nc,us"
 CSV_FILE = "weather_history.csv"
 
 # Build the URL
-url = f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={API_KEY}&units=imperial"
+URL = f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={API_KEY}&units=imperial"
 
 # Run the pipeline
 def run_pipeline():
