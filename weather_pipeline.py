@@ -11,27 +11,30 @@ import pandas as pd
 from datetime import datetime
 
 ## Use this exact config block if you are on the basic Free Plan:
-CITY = "Raleigh,NC,US"
+CITY = "raleigh,nc,us"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
 
-# The standard current weather 2.5 endpoint is still fully active for free accounts!
-BASE_URL = "https://openweathermap.org"
-
 def run_pipeline():
+    
+    # 4. Fetch Data
     query_params = {
         "q": CITY,
         "appid": API_KEY,
         "units": "imperial"
     }
     
-    response = requests.get(BASE_URL, params=query_params)
+    # Make sure there's a ? before the first parameter
+    URL = f"https://api.openweathermap.org/data/2.5/weather?q={CITY.replace(',', '%2C')}&appid={API_KEY}&units=imperial"
+    response = requests.get(URL)
     
+    # Check if the request was successful
     if response.status_code != 200:
         print(f"Error fetching data: {response.status_code}")
         print(f"Details: {response.text}")
         return
 
+    # Parse the JSON response
     raw_data = response.json()
 
     # Match the JSON structure for 2.5 Current Weather
@@ -57,7 +60,7 @@ def run_pipeline():
     df_final.to_csv(CSV_FILE, index=False)
 
     # 7. Log
-    print(f"Successfully saved weather data for {CITY_NAME} using API v3.0!")
+    print(f"Successfully saved weather data for {CITY} using API v2.5!")
 
 # 8. Run the pipeline
 if __name__ == "__main__":
