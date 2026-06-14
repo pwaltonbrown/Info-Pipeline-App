@@ -29,8 +29,8 @@ def run_pipeline():
     }
     
     # Make sure there's a ? before the first parameter
-    url = f"https://api.openweathermap.org/data/2.5/weather?q=raleigh,nc,us&appid={WEATHER_API_KEY}&units=imperial"
-    response = requests.get(url)
+    URL = f"https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=imperial"
+    response = requests.get(URL)
     
     # Check if the request was successful
     if response.status_code != 200:
