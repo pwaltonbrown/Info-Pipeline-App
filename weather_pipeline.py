@@ -11,7 +11,7 @@ import pandas as pd
 from datetime import datetime
 
 ## Use this exact config block if you are on the basic Free Plan:
-CITY = "Raleigh,NC,US"
+CITY = "raleigh,nc,us"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
 
@@ -28,8 +28,9 @@ def run_pipeline():
         "units": "imperial"
     }
     
-    # Make the API request
-    response = requests.get(BASE_URL, params=query_params)
+    # Make sure there's a ? before the first parameter
+    url = f"https://api.openweathermap.org/data/2.5/weather?q=raleigh,nc,us&appid={WEATHER_API_KEY}&units=imperial"
+    response = requests.get(url)
     
     # Check if the request was successful
     if response.status_code != 200:
