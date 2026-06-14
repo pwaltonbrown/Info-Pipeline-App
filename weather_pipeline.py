@@ -10,46 +10,37 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-# 1. Clean Configuration Layout (Updated for 3.0 Coordinates)
-CITY_NAME = "Raleigh"  # Used for your CSV logging name
-LAT = "35.7796"       # Raleigh, NC Latitude
-LON = "-78.6382"      # Raleigh, NC Longitude
-
+## Use this exact config block if you are on the basic Free Plan:
+CITY = "Raleigh,NC,US"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
 
-# FIXED: Swapped legacy 2.5 endpoint for the universally supported One Call 3.0 endpoint
-BASE_URL = "https://api.openweathermap.org/data/3.0/onecall"
+# The standard current weather 2.5 endpoint is still fully active for free accounts!
+BASE_URL = "https://openweathermap.org"
 
 def run_pipeline():
-    # 2. Package parameters cleanly as a safe dictionary (Updated for 3.0 payload)
     query_params = {
-        "lat": LAT,
-        "lon": LON,
-        "exclude": "minutely,hourly,daily,alerts", # We only want current weather
+        "q": CITY,
         "appid": API_KEY,
         "units": "imperial"
     }
-
-    # 3. Extract Data from API
+    
     response = requests.get(BASE_URL, params=query_params)
-
-    # Check if the request was successful
+    
     if response.status_code != 200:
         print(f"Error fetching data: {response.status_code}")
-        print(f"Server response details: {response.text}")
+        print(f"Details: {response.text}")
         return
 
-    # Parse the JSON response
     raw_data = response.json()
 
-    # 4. Transform Data (Updated to match 3.0 JSON key nesting)
+    # Match the JSON structure for 2.5 Current Weather
     cleaned_data = {
         "timestamp": [datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
-        "city": [CITY_NAME],
-        "temperature": [raw_data["current"]["temp"]],
-        "humidity": [raw_data["current"]["humidity"]],
-        "weather_condition": [raw_data["current"]["weather"][0]["description"]]
+        "city": [raw_data["name"]],
+        "temperature": [raw_data["main"]["temp"]],
+        "humidity": [raw_data["main"]["humidity"]],
+        "weather_condition": [raw_data["weather"][0]["description"]]
     }
 
     # Create a DataFrame
