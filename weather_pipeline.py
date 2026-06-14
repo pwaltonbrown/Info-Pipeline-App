@@ -15,10 +15,6 @@ CITY = "raleigh,nc,us"
 API_KEY = os.environ.get("WEATHER_API_KEY")
 CSV_FILE = "weather_history.csv"
 
-# The standard current weather 2.5 endpoint is still fully active for free accounts!
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-
-
 def run_pipeline():
     
     # 4. Fetch Data
@@ -29,7 +25,7 @@ def run_pipeline():
     }
     
     # Make sure there's a ? before the first parameter
-    URL = f"https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=imperial"
+    URL = f"https://api.openweathermap.org/data/2.5/weather?q={CITY.replace(',', '%2C')}&appid={API_KEY}&units=imperial"
     response = requests.get(URL)
     
     # Check if the request was successful
