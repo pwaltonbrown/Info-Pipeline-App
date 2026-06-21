@@ -27,3 +27,4 @@ timestamp,city,temperature,humidity,weather_condition
 2026-06-21 04:12:10,Raleigh,71.71,68,broken clouds
 2026-06-21 09:50:11,Raleigh,65.53,85,broken clouds
 2026-06-21 14:10:43,Raleigh,83.61,58,broken clouds
+2026-06-21 19:40:49,Raleigh,92.89,40,clear sky
