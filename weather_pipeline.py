@@ -30,8 +30,14 @@ def run_pipeline():
     
     # Check if the request was successful
     if response.status_code != 200:
+        
+        # Log the error
         print(f"Error fetching data: {response.status_code}")
+        
+        # Log the error details
         print(f"Details: {response.text}")
+        
+        # Return
         return
 
     # Parse the JSON response
@@ -51,9 +57,15 @@ def run_pipeline():
 
     # 5. Load Data
     if os.path.exists(CSV_FILE):
+        
+        # Load existing data
         df_existing = pd.read_csv(CSV_FILE)
+        
+        # Append new data
         df_final = pd.concat([df_existing, df_new], ignore_index=True)
     else:
+        
+        # Create a new DataFrame
         df_final = df_new
 
     # 6. Save Data

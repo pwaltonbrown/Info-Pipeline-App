@@ -1,5 +1,5 @@
 # Name: test_weather_pipeline.py
-# Description: This is a program to test weather_pipeline.py
+# Description: This is a program to test weather_pipeline.py url and params are correct and returns early on failed api response
 # Author: Patrick Brown
 # Date: 6/7/2026
 
@@ -34,7 +34,11 @@ class WeatherPipelineTests(unittest.TestCase):
 
         # Assert that the requests.get function was called with the correct arguments
         mock_get.assert_called_once_with(
+            
+            # Use the BASE_URL and params
             weather_pipeline.BASE_URL,
+            
+            # Use the CITY, API_KEY, and units
             params={
                 "q": weather_pipeline.CITY,
                 "appid": weather_pipeline.API_KEY,
@@ -49,8 +53,10 @@ class WeatherPipelineTests(unittest.TestCase):
     def test_run_pipeline_returns_early_on_failed_api_response(self, mock_get, mock_to_csv, _mock_exists):
         mock_get.return_value = Mock(status_code=500, text="server error")
 
+        # Call the run_pipeline function
         weather_pipeline.run_pipeline()
 
+        # Assert that the to_csv function was not called
         mock_to_csv.assert_not_called()
 
 # Run the tests
